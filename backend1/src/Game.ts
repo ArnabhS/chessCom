@@ -33,17 +33,18 @@ export class Game{
         to:string;
     }){
         //validation here
-        if(this.board.moves.length % 2 ===0 && socket !== this.player1)
+        if(this.board.moves().length % 2 ===0 && socket !== this.player1)
             {
                 return
             }
-        if(this.board.moves.length % 2 ===0 && socket !== this.player2)
+        if(this.board.moves().length % 2 ===0 && socket !== this.player2)
             {
                 return
             }
         try {
             this.board.move(move)
         } catch (error) {
+            console.log(error);
             return;
         }if(this.board.isGameOver()){
             this.player1.emit(JSON.stringify({
@@ -59,13 +60,13 @@ export class Game{
         // is it the users move
         //is the move valid
         if(this.board.moves.length %2 === 0){
-            this.player2.emit(JSON.stringify({
+            this.player2.send(JSON.stringify({
                 type:MOVE,
                 payload: move
             }))
         }
         else{
-            this.player1.emit(JSON.stringify({
+            this.player1.send(JSON.stringify({
                 type:MOVE,
                 payload: move
             }))
